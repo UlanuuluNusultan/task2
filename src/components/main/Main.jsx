@@ -1,71 +1,28 @@
 import React, { useReducer } from 'react';
 import styled from 'styled-components';
 
-const MainStyled = styled.div`
-  .mama {
-        width: 780px;
-        height: 287px;
-        background-color: #AD9BE9;
-        border-radius: 12px;
-        margin-top: 100px;
-      }
-      .papa {
-        display: flex;
-        flex-wrap: wrap;
-      }
-    
-      .input-group {
-        display: flex;
-        flex-direction: column;
-        margin: 20px;
-      }
-    
-      label {
-        margin-bottom: 5px;
-      }
-    
-      input {
-        width: 340px;
-        height: 39px;
-        border-radius: 8px;
-      }
-      .button {
-        display: flex;
-        justify-content: end;
-      }
-      .button button {
-        width: 97px;
-        height: 51px;
-        color: white;
-        background-color: #4A026B;
-        border-radius: 12px;
-      }
-      .btn1 {
-        width: 186px;
-        height: 51px;
-        margin-left: 20px;
-      }
-`;
-
-// Определение начального состояния и редуктора
-const initialState = {
-  date: '',
-  title: '',
-  price: '',
-};
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_FIELD':
-      return { ...state, [action.fieldName]: action.fieldValue };
-    case 'RESET_FORM':
-      return initialState;
-    default:
-      return state;
+const Main = ({ onClose, addNewExpen, editingItem }) => {
+  const initialState = editingItem ? {
+    date: editingItem.date,
+    title: editingItem.title,
+    price: editingItem.price,
+  } : {
+    date: '',
+    title: '',
+    price: '',
   }
-};
 
-const Main = ({ onClose, addNewExpen }) => {
+  const formReducer = (state, action) => {
+    switch (action.type) {
+      case 'SET_FIELD':
+        return { ...state, [action.fieldName]: action.fieldValue };
+      case 'RESET_FORM':
+        return initialState;
+      default:
+        return state;
+    }
+  };
+
   const [formState, dispatch] = useReducer(formReducer, initialState);
 
   const handleChange = (e) => {
@@ -74,13 +31,7 @@ const Main = ({ onClose, addNewExpen }) => {
   };
 
   const submit = () => {
-    const data = {
-      title: formState.title,
-      price: formState.price,
-      date: formState.date,
-      id: Math.random(),
-    };
-    addNewExpen(data);
+    addNewExpen({ ...formState });
     dispatch({ type: 'RESET_FORM' });
   };
 
@@ -106,7 +57,7 @@ const Main = ({ onClose, addNewExpen }) => {
         <div className="button">
           <button onClick={onClose}>Отмена</button>
           <button disabled={formEntries} style={{ background: formEntries ? 'red' : 'blue' }} onClick={submit}>
-            Добавить расходы
+           {editingItem ? 'Сохранить' : ' Добавить расходы'}
           </button>
         </div>
       </div>
@@ -115,3 +66,48 @@ const Main = ({ onClose, addNewExpen }) => {
 };
 
 export default Main;
+const MainStyled = styled.div`
+  .mama {
+          width: 780px;
+          height: 287px;
+          background-color: #AD9BE9;
+          border-radius: 12px;
+          margin-top: 100px;
+        }
+        .papa {
+          display: flex;
+          flex-wrap: wrap;
+        }
+  
+        .input-group {
+          display: flex;
+          flex-direction: column;
+          margin: 20px;
+        }
+  
+        label {
+          margin-bottom: 5px;
+        }
+  
+        input {
+          width: 340px;
+          height: 39px;
+          border-radius: 8px;
+        }
+        .button {
+          display: flex;
+          justify-content: end;
+        }
+        .button button {
+          width: 97px;
+          height: 51px;
+          color: white;
+          background-color: #4A026B;
+          border-radius: 12px;
+        }
+        .btn1 {
+          width: 186px;
+          height: 51px;
+          margin-left: 20px;
+        }
+`;
