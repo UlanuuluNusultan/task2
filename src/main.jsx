@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import Registration from './components/registration/Registration.jsx'
+import { ExpenceContextProvider } from './store/index.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <ExpenceContextProvider>
+      <App />
+    </ExpenceContextProvider>
   </React.StrictMode>,
 )

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Head from '../head/Head';
+import Head from '../head/Head'
 import styled from 'styled-components';
 const Registration = () => {
   const [email, setEmail] = useState('');
